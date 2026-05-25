@@ -1,0 +1,15 @@
+# Ambiente virtual
+venv/
+
+# Cache Python
+__pycache__/
+*.pyc
+
+# Arquivos de dados
+*.csv
+
+# Modelo treinado
+*.pkl
+
+# Variáveis de ambiente
+.env

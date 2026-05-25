@@ -1,0 +1,33 @@
+:root {
+  /* Backgrounds */
+  --bg-main: #0D1F2D;
+  --bg-card: #1d2e3d;
+  --bg-border: #354656;
+
+  /* Primary Theme */
+  --color-primary-dark: #0D6E6E;
+  --color-primary: #4a9d9c;
+  --color-primary-light: #afffff;
+
+  /* Alerts */
+  --color-danger: #FF3D3D;
+  --color-warning: #ffe0c8;
+
+  /* Text */
+  --text-main: #FFFFFF;
+  --text-muted: #e0e0e0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+

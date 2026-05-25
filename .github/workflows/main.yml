@@ -1,0 +1,37 @@
+name: CI EnerGest
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          
+      - name: Install Dependencies
+        run: |
+          # Encontra a pasta que contém o requirements.txt e entra nela
+          BACKEND_PATH=$(find . -name "requirements.txt" -not -path "*/venv/*" -exec dirname {} \;)
+          echo "Diretório backend encontrado: $BACKEND_PATH"
+          cd $BACKEND_PATH
+          python -m pip install --upgrade pip
+          pip install pytest httpx joblib pandas fastapi uvicorn anyio
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          
+      - name: Run Tests
+        run: |
+          # Encontra a pasta onde os testes estão
+          BACKEND_PATH=$(find . -name "test_main.py" -not -path "*/venv/*" -exec dirname {} \;)
+          # Sobe um nível para ficar na raiz do backend
+          cd $BACKEND_PATH/..
+          export PYTHONPATH=$PYTHONPATH:.
+          python -m pytest

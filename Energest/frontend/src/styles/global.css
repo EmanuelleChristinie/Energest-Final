@@ -1,0 +1,119 @@
+/* Importando a Fonte Inter oficial do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --bg-main: #0D1F2D;
+  --bg-card: #1d2e3d;
+  --bg-border: #354656;
+  --primary-dark: #0D6E6E;
+  --primary: #4a9d9c;
+  --primary-light: #afffff;
+  --danger: #FF3D3D;
+  --warning: #ffe0c8;
+  --text-main: #FFFFFF;
+  --text-muted: #e0e0e0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Isso evita que o padding quebre o layout para os lados */
+  font-family: 'Inter', sans-serif; /* Fonte Inter aplicada em todo o projeto */
+}
+
+/* Oculta o scroll horizontal da página inteira por segurança */
+body, html {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  overflow-x: hidden; 
+}
+
+/* =========================================
+   ANIMAÇÕES CORRIGIDAS
+========================================= */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0; /* Inicia invisível para a animação ter efeito */
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+
+/* =========================================
+   ESTILOS DOS MENUS DROPDOWN (Estética Limpa)
+========================================= */
+.dropdown-menu {
+  background-color: var(--bg-main);
+  border: 1px solid var(--bg-border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.dropdown-item {
+  transition: all 0.2s ease;
+}
+.dropdown-item:hover {
+  background-color: var(--bg-card);
+  border-radius: 8px;
+}
+
+/* Scrollbar Customizada */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-main); }
+::-webkit-scrollbar-thumb { background: var(--bg-border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* =========================================
+   SPINNER DE CARREGAMENTO E PULSO
+========================================= */
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--bg-border);
+  border-top: 4px solid var(--primary-light);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* =========================================
+   RESPONSIVIDADE (MOBILE / TABLET)
+========================================= */
+.sidebar {
+  transition: width 0.3s ease, padding 0.3s ease;
+}
+
+@media (max-width: 850px) {
+  /* Encolhe a Sidebar para mostrar só os ícones */
+  .sidebar { width: 80px !important; padding: 24px 12px !important; align-items: center; }
+  .sidebar-text { display: none !important; }
+  .sidebar-logo { justify-content: center !important; margin-bottom: 40px !important; }
+  .sidebar-item { justify-content: center !important; padding: 12px !important; }
+  
+  /* Esconde o texto do perfil no Header para ganhar espaço */
+  .hide-mobile { display: none !important; }
+  
+  /* Ajusta o padding do main */
+  main { padding: 16px !important; }
+}
