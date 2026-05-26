@@ -42,7 +42,7 @@ Abra o seu terminal, navegue até a pasta raiz do back-end (`backend/`) e execut
 
 ```bash
 # 1. Instale as dependências essenciais
-pip install fastapi uvicorn pandas scikit-learn pydantic joblib fpdf matplotlib
+pip install fastapi uvicorn pandas scikit-learn pydantic joblib fpdf matplotlib seaborn 
 
 # 2. Gere os dados falsos de IoT e treine a IA localmente
 python fix_ia.py
