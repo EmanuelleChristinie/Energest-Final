@@ -7,7 +7,7 @@ import { kpiData, chartData, iaRecommendations, equipamentosData } from './mockD
 // Mantenha em 'false' para ler os dados REAIS do seu Python (main.py)
 const USE_MOCK = false; 
 
-const BASE_URL = 'http://127.0.0.1:8000'; 
+const BASE_URL = 'http://127.0.0.1:8001';  // alterei a porta 
 // ==========================================
 
 /**
