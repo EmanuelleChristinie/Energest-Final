@@ -50,7 +50,7 @@ python fix_ia.py
 # 3. Inicie o servidor da API
 uvicorn app.main:app --reload
 
-A API estará escutando na porta http://127.0.0.1:8000.
+A API estará escutando na porta http://127.0.0.1:8001.
 
 2. Configurando o Front-end (Painel React)
 Abra um novo terminal, navegue até a pasta raiz do front-end (energest-front/) e execute:
