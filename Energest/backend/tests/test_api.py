@@ -1,7 +1,26 @@
 import pytest
 from httpx import AsyncClient, ASGITransport # Importamos o transport
-from .main import app
+from ..app.main import app
+import os
+import joblib
+from sklearn.linear_model import LinearRegression
 
+# Cria o model.pkl temporário para o GitHub Actions passar no teste
+for caminho in ["model.pkl", "../model.pkl", "backend/model.pkl", "backend/app/model.pkl"]:
+    diretorio = os.path.dirname(caminho)
+    if diretorio and not os.path.exists(diretorio):
+        try:
+            os.makedirs(diretorio, exist_ok=True)
+        except Exception:
+            continue
+    if not os.path.exists(caminho):
+        try:
+            model_falso = LinearRegression()
+            model_falso.fit([[1]], [1])
+            joblib.dump(model_falso, caminho)
+        except Exception:
+            pass
+        
 # Configuração para o pytest-asyncio
 pytestmark = pytest.mark.asyncio
 
