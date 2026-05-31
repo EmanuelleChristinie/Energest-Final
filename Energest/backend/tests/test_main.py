@@ -1,30 +1,37 @@
-import pytest
-from fastapi.testclient import TestClient
-from app.main import app
 import os
 import joblib
 from sklearn.linear_model import LinearRegression
 
-# Cria o model.pkl temporário para o GitHub Actions passar no teste
-for caminho in ["model.pkl", "../model.pkl", "backend/model.pkl", "backend/app/model.pkl"]:
-    diretorio = os.path.dirname(caminho)
-    if diretorio and not os.path.exists(diretorio):
-        try:
+# ====================
+# GERADOR DE MODELO ANTES DE IMPORTAR A API (pra o github)
+caminhos_modelo = [
+    "model.pkl", 
+    "../model.pkl", 
+    "backend/model.pkl", 
+    "backend/app/model.pkl",
+    "/home/runner/work/Energest-Final/Energest-Final/Energest/backend/model.pkl"
+]
+
+for caminho in caminhos_modelo:
+    try:
+        diretorio = os.path.dirname(caminho)
+        if diretorio and not os.path.exists(diretorio):
             os.makedirs(diretorio, exist_ok=True)
-        except Exception:
-            continue
-    if not os.path.exists(caminho):
-        try:
+        if not os.path.exists(caminho):
             model_falso = LinearRegression()
             model_falso.fit([[1]], [1])
             joblib.dump(model_falso, caminho)
-        except Exception:
-            pass
-        
+    except Exception:
+        pass
+# ===============
+
+import pytest
+from fastapi.testclient import TestClient
+from app.main import app
+
 client = TestClient(app)
 
-# 1. CENÁRIO DE USO CORRETO ("Caminho Feliz")
-# Verifica se a IA recebe dados industriais e devolve a predição de energia
+# 1. CENÁRIO DE USO CORRETO 
 def test_predict_success():
     payload = {
         "temperature": 28.5,
@@ -36,26 +43,21 @@ def test_predict_success():
     response = client.post("/predict", json=payload)
     assert response.status_code == 200
     assert "previsao" in response.json()
-    # Garante que o resultado é um número (a predição da IA)
     assert isinstance(response.json()["previsao"], (int, float))
 
-# 2. ENTRADA INVÁLIDA (Comportamento indevido)
-# Verifica se o sistema trava e avisa quando enviamos dados errados (ex: texto em vez de número)
+# 2. ENTRADA INVÁLIDA
 def test_predict_invalid_data():
     payload = {
-        "temperature": "muito quente", # Erro: deveria ser número
+        "temperature": "muito quente",
         "load_percentage": 85.0
     }
     response = client.post("/predict", json=payload)
-    # O código 422 é o padrão do FastAPI para "Dados Inválidos"
     assert response.status_code == 422
 
 # 3. CASO LIMITE
-# Testa a rota que lista os equipamentos para garantir que o banco está integrado
 def test_get_equipamentos_list():
     response = client.get("/api/equipamentos")
     assert response.status_code == 200
     assert isinstance(response.json(), list)
-    # Se houver itens, verifica se eles têm o formato esperado
     if len(response.json()) > 0:
         assert "id" in response.json()[0]

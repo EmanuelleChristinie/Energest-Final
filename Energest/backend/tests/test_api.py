@@ -1,35 +1,40 @@
-import pytest
-from httpx import AsyncClient, ASGITransport # Importamos o transport
-from ..app.main import app
 import os
 import joblib
 from sklearn.linear_model import LinearRegression
 
-# Cria o model.pkl temporário para o GitHub Actions passar no teste
-for caminho in ["model.pkl", "../model.pkl", "backend/model.pkl", "backend/app/model.pkl"]:
-    diretorio = os.path.dirname(caminho)
-    if diretorio and not os.path.exists(diretorio):
-        try:
+# ==============================================================================
+# GERADOR DE MODELO ANTES DE IMPORTAR A API (CRÍTICO PARA O GITHUB)
+caminhos_modelo = [
+    "model.pkl", 
+    "../model.pkl", 
+    "backend/model.pkl", 
+    "backend/app/model.pkl",
+    "/home/runner/work/Energest-Final/Energest-Final/Energest/backend/model.pkl"
+]
+
+for caminho in caminhos_modelo:
+    try:
+        diretorio = os.path.dirname(caminho)
+        if diretorio and not os.path.exists(diretorio):
             os.makedirs(diretorio, exist_ok=True)
-        except Exception:
-            continue
-    if not os.path.exists(caminho):
-        try:
+        if not os.path.exists(caminho):
             model_falso = LinearRegression()
             model_falso.fit([[1]], [1])
             joblib.dump(model_falso, caminho)
-        except Exception:
-            pass
-        
-# Configuração para o pytest-asyncio
-pytestmark = pytest.mark.asyncio
+    except Exception:
+        pass
+# ===============
 
+import pytest
+from httpx import AsyncClient, ASGITransport
+from ..app.main import app
+
+pytestmark = pytest.mark.asyncio
 BASE_URL = "http://127.0.0.1:8001"
 
 @pytest.mark.asyncio
 async def test_read_root():
     """Teste 1: Verificar se a API está online"""
-    # Mudança aqui: usamos transport em vez de app diretamente
     async with AsyncClient(transport=ASGITransport(app=app), base_url=BASE_URL) as ac:
         response = await ac.get("/")
     assert response.status_code == 200
