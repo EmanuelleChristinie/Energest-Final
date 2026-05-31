@@ -2,8 +2,9 @@ import os
 import joblib
 from sklearn.linear_model import LinearRegression
 
-# ===================
-# GERADOR DE MODELO ANTES DE IMPORTAR A API (CRÍTICO PARA O GITHUB)
+# ==============================================================================
+# SEÇÃO 0: GERADOR DE MODELO ADAPTADO PARA 5 VARIÁVEIS (FEATURES)
+# ==============================================================================
 caminhos_modelo = [
     "model.pkl", 
     "../model.pkl", 
@@ -19,16 +20,20 @@ for caminho in caminhos_modelo:
             os.makedirs(diretorio, exist_ok=True)
         if not os.path.exists(caminho):
             model_falso = LinearRegression()
-            model_falso.fit([[1]], [1])
+            # Treina com 5 colunas fictícias para bater com o payload do teste (5 features)
+            model_falso.fit([[1.0, 1.0, 1.0, 1.0, 1.0]], [1.0])
             joblib.dump(model_falso, caminho)
     except Exception:
         pass
-# ================
+# ==============================================================================
 
 import pytest
 from httpx import AsyncClient, ASGITransport
-# MUDANÇA DA LINHA ABAIXO: Importação absoluta para alinhar com o test_main
 from app.main import app
+from app.database import Base, engine
+
+# Força a criação de todas as tabelas e colunas atualizadas antes do teste rodar
+Base.metadata.create_all(bind=engine)
 
 pytestmark = pytest.mark.asyncio
 BASE_URL = "http://127.0.0.1:8001"

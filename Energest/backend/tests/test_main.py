@@ -2,8 +2,9 @@ import os
 import joblib
 from sklearn.linear_model import LinearRegression
 
-# ====================
-# GERADOR DE MODELO ANTES DE IMPORTAR A API (pra o github)
+# ==============================================================================
+# SEÇÃO 0: GERADOR DE MODELO ADAPTADO PARA 5 VARIÁVEIS (FEATURES)
+# ==============================================================================
 caminhos_modelo = [
     "model.pkl", 
     "../model.pkl", 
@@ -19,19 +20,24 @@ for caminho in caminhos_modelo:
             os.makedirs(diretorio, exist_ok=True)
         if not os.path.exists(caminho):
             model_falso = LinearRegression()
-            model_falso.fit([[1]], [1])
+            # Treina com 5 colunas fictícias para bater com o payload do teste (5 features)
+            model_falso.fit([[1.0, 1.0, 1.0, 1.0, 1.0]], [1.0])
             joblib.dump(model_falso, caminho)
     except Exception:
         pass
-# ===============
+# ==============================================================================
 
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
+from app.database import Base, engine
+
+# Força a criação de todas as tabelas e colunas atualizadas antes do teste rodar
+Base.metadata.create_all(bind=engine)
 
 client = TestClient(app)
 
-# 1. CENÁRIO DE USO CORRETO 
+# 1. CENÁRIO DE USO CORRETO ("Caminho Feliz")
 def test_predict_success():
     payload = {
         "temperature": 28.5,
