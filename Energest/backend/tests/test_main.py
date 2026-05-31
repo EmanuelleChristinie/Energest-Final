@@ -1,7 +1,26 @@
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
+import os
+import joblib
+from sklearn.linear_model import LinearRegression
 
+# Cria o model.pkl temporário para o GitHub Actions passar no teste
+for caminho in ["model.pkl", "../model.pkl", "backend/model.pkl", "backend/app/model.pkl"]:
+    diretorio = os.path.dirname(caminho)
+    if diretorio and not os.path.exists(diretorio):
+        try:
+            os.makedirs(diretorio, exist_ok=True)
+        except Exception:
+            continue
+    if not os.path.exists(caminho):
+        try:
+            model_falso = LinearRegression()
+            model_falso.fit([[1]], [1])
+            joblib.dump(model_falso, caminho)
+        except Exception:
+            pass
+        
 client = TestClient(app)
 
 # 1. CENÁRIO DE USO CORRETO ("Caminho Feliz")
@@ -31,8 +50,8 @@ def test_predict_invalid_data():
     # O código 422 é o padrão do FastAPI para "Dados Inválidos"
     assert response.status_code == 422
 
-# 3. CASO LIMITE / VARIAÇÃO IMPORTANTE
-# Testa a rota que lista os equipamentos para garantir que o banco/CSV está integrado
+# 3. CASO LIMITE
+# Testa a rota que lista os equipamentos para garantir que o banco está integrado
 def test_get_equipamentos_list():
     response = client.get("/api/equipamentos")
     assert response.status_code == 200
