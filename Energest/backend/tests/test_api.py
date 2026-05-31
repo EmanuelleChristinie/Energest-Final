@@ -2,7 +2,7 @@ import os
 import joblib
 from sklearn.linear_model import LinearRegression
 
-# ==============================================================================
+# ===================
 # GERADOR DE MODELO ANTES DE IMPORTAR A API (CRÍTICO PARA O GITHUB)
 caminhos_modelo = [
     "model.pkl", 
@@ -23,11 +23,12 @@ for caminho in caminhos_modelo:
             joblib.dump(model_falso, caminho)
     except Exception:
         pass
-# ===============
+# ================
 
 import pytest
 from httpx import AsyncClient, ASGITransport
-from ..app.main import app
+# MUDANÇA DA LINHA ABAIXO: Importação absoluta para alinhar com o test_main
+from app.main import app
 
 pytestmark = pytest.mark.asyncio
 BASE_URL = "http://127.0.0.1:8001"
