@@ -12,7 +12,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-# Função auxiliar para o FastAPI gerenciar a conexão
+
 def get_db():
     db = SessionLocal()
     try:

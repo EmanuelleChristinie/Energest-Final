@@ -42,7 +42,17 @@ export const getConsumoHistorico = () => fetchFromApi('/api/dashboard/grafico-co
 
 export const getRecomendacoesIA = () => fetchFromApi('/api/ia/recomendacoes', iaRecommendations);
 
-export const getEquipamentos = () => fetchFromApi('/api/equipamentos/lista', equipamentosData);
+export const getEquipamentos = async () => {
+  const result = await fetchFromApi('/api/equipamentos/lista', equipamentosData);
+  // Se o banco retornar vazio, usa os dados de demonstração (mockData)
+  if (!result || result.length === 0) {
+    console.warn('[EQUIPAMENTOS] Banco vazio — carregando dados de demonstração.');
+    // Limpa cache antigo para não exibir dados desatualizados
+    localStorage.removeItem('energest_equipamentos');
+    return equipamentosData;
+  }
+  return result;
+};
 
 // Rota para a tela de Relatórios (Relatorios.jsx)
 export const fetchRelatorioIA = async () => {
@@ -72,10 +82,23 @@ export const getLiveIoTData = () => fetchFromApi('/api/iot/live', {
 });
 
 export const simularPrevisaoIA = async (dadosTelemetria) => {
-  return fetchFromApi('/api/ia/previsao', {
-    risco: 'Operação Estável',
-    probabilidade_falha: '12.5',
-    consumo_kwh: '250.0',
-    eficiencia: '98.0'
-  });
+  if (USE_MOCK) {
+    return { previsao: 250.0 };
+  }
+
+  try {
+    const response = await fetch(`${BASE_URL}/predict`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dadosTelemetria)
+    });
+    if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error(`[API ERROR] Falha ao comunicar com /predict:`, error);
+    console.warn("🛡️ Ativando Fallback Mode: Usando Mocks para não travar a tela.");
+    return { previsao: 250.0 };
+  }
 };

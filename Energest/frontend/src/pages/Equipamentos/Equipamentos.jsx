@@ -15,24 +15,14 @@ const Equipamentos = () => {
   useEffect(() => {
     const carregarDados = async () => {
       setIsLoadingData(true);
+      // Limpa cache antigo para garantir que os dados mais recentes sejam usados
+      localStorage.removeItem('energest_equipamentos');
       try {
         // Vai buscar os dados ao FastAPI (ou assume o mock de segurança se falhar)
         const dadosAPI = await getEquipamentos();
-        
-        // Formata os dados para garantir que a última máquina aparece offline
-        const dadosFormatados = dadosAPI.map((maq, index) => ({
-          ...maq,
-          status: index === dadosAPI.length - 1 ? 'Offline' : maq.status
-        }));
-        
-        setListaEquipamentos(dadosFormatados);
+        setListaEquipamentos(dadosAPI);
       } catch (error) {
         console.error("Erro de conexão com a API:", error);
-        // Fallback de emergência: Tenta recuperar do cache do navegador
-        const dadosGuardados = localStorage.getItem('energest_equipamentos');
-        if (dadosGuardados) {
-          setListaEquipamentos(JSON.parse(dadosGuardados));
-        }
       } finally {
         setIsLoadingData(false);
       }

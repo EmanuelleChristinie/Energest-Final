@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { fetchRelatorioIA } from '../services/api';
 
 const Relatorios = () => {
   const [data, setData] = useState(null);
@@ -8,10 +9,7 @@ const Relatorios = () => {
   const consultarIA = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/relatorio/gerar');
-      if (!response.ok) throw new Error("Erro na resposta do servidor");
-      
-      const result = await response.json();
+      const result = await fetchRelatorioIA();
       setData(result);
     } catch (error) {
       console.error("Erro:", error);

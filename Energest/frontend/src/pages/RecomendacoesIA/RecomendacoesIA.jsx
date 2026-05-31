@@ -1,6 +1,5 @@
 // src/pages/RecomendacoesIA/RecomendacoesIA.jsx
 import React, { useState, useEffect } from 'react';
-import SimuladorIAReal from '../../components/ui/SimuladorIAReal';
 
 const bibliotecaIA = [
   { diag: "Pico de temperatura anômalo no mancal principal.", acao: "Ajustar fluxo de refrigeração para 85%.", risco: "Desgaste severo e parada em 4h" },
@@ -259,8 +258,6 @@ const RecomendacoesIA = () => {
           })
         )}
       </div>
-
-      {/* <SimuladorIAReal /> */}
 
       {toastConfig && (
         <div className="animate-fade-in" style={{ position: 'fixed', bottom: '32px', right: '32px', backgroundColor: toastConfig.tipo === 'sucesso' ? '#10B981' : toastConfig.tipo === 'erro' ? 'var(--bg-card)' : 'var(--primary-dark)', color: '#ffffff', padding: '16px 24px', borderRadius: '8px', boxShadow: '0 10px 25px rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', gap: '12px', zIndex: 9999, fontWeight: '500', borderLeft: toastConfig.tipo === 'erro' ? '4px solid var(--danger)' : 'none' }}>

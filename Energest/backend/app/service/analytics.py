@@ -27,17 +27,17 @@ class EnergyAnalyzer:
         self.df["consumo_estimado"] = self.model.predict(self.df[features])
         media_consumo = self.df["consumo_estimado"].mean()
         
-        # Cálculo de Custos (Baseado no seu Visualizer)
+        # Cálculo de Custos 
         custo_base = float(self.df[self.df["consumo_estimado"] <= media_consumo]["consumo_estimado"].sum() * 0.85)
         custo_sobretaxa = float(self.df[self.df["consumo_estimado"] > media_consumo]["consumo_estimado"].sum() * 0.95)
 
-        # Formatação para o gráfico do Frontend (Recharts)
+
         dados_grafico = self.df.tail(20).apply(lambda x: {
             "name": x['timestamp'].strftime('%d/%m'),
             "consumo": round(float(x['consumo_estimado']), 2)
         }, axis=1).tolist()
 
-        # Estrutura completa exigida pelo EnergyVisualizer e Frontend
+       
         self.results = {
             "periodo": f"{self.df['timestamp'].min().strftime('%d/%m/%Y')} - {self.df['timestamp'].max().strftime('%d/%m/%Y')}",
             "kpis": {

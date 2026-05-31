@@ -49,39 +49,111 @@ export const iaRecommendations = [
 export const equipamentosData = [
   {
     id: "MOT-001",
-    nome: "Motor Principal - Linha 1",
+    nome: "Motor Trifásico - Extrusora Linha 1",
     tipo: "Motor Trifásico",
     status: "Crítico",
     temperatura: "78ºC",
     vibracao: "Alta (5.2 mm/s)",
-    ultima_manutencao: "10/01/2026"
+    ultima_manutencao: "2026-01-10"
   },
   {
     id: "COMP-023",
-    nome: "Compressor Central",
-    tipo: "Compressor de Ar",
+    nome: "Compressor de Parafuso - Central",
+    tipo: "Compressor Parafuso",
     status: "Operacional",
     temperatura: "45ºC",
     vibracao: "Normal (1.1 mm/s)",
-    ultima_manutencao: "15/02/2026"
+    ultima_manutencao: "2026-02-15"
   },
   {
     id: "EXA-005",
-    nome: "Sistema de Exaustão Central",
+    nome: "Exaustor de Gases - Setor Fundição",
     tipo: "Exaustor",
     status: "Atenção",
     temperatura: "65ºC",
     vibracao: "Média (3.0 mm/s)",
-    ultima_manutencao: "05/11/2025"
+    ultima_manutencao: "2025-11-05"
   },
   {
     id: "MOT-002",
-    nome: "Motor Secundário - Linha 2",
+    nome: "Motor Trifásico - Transportador Linha 2",
     tipo: "Motor Trifásico",
     status: "Operacional",
     temperatura: "42ºC",
     vibracao: "Normal (0.8 mm/s)",
-    ultima_manutencao: "20/01/2026"
+    ultima_manutencao: "2026-01-20"
+  },
+  {
+    id: "BOMB-011",
+    nome: "Bomba Centrífuga - Circuito Hidráulico A",
+    tipo: "Bomba Centrífuga",
+    status: "Operacional",
+    temperatura: "38ºC",
+    vibracao: "Normal (0.6 mm/s)",
+    ultima_manutencao: "2026-03-01"
+  },
+  {
+    id: "BOMB-012",
+    nome: "Bomba de Recirculação - Torre de Resfriamento",
+    tipo: "Bomba Centrífuga",
+    status: "Atenção",
+    temperatura: "58ºC",
+    vibracao: "Média (2.4 mm/s)",
+    ultima_manutencao: "2025-10-18"
+  },
+  {
+    id: "FORNO-003",
+    nome: "Forno Industrial de Resistência - Tratamento Térmico",
+    tipo: "Trafo a Seco",
+    status: "Operacional",
+    temperatura: "52ºC",
+    vibracao: "Normal (0.4 mm/s)",
+    ultima_manutencao: "2026-02-28"
+  },
+  {
+    id: "INV-009",
+    nome: "Inversor de Frequência - Esteira Linha 3",
+    tipo: "Motor Trifásico",
+    status: "Operacional",
+    temperatura: "47ºC",
+    vibracao: "Normal (0.9 mm/s)",
+    ultima_manutencao: "2026-04-10"
+  },
+  {
+    id: "MOT-007",
+    nome: "Motor do Moinho de Bolas - Setor Cerâmica",
+    tipo: "Motor Trifásico",
+    status: "Crítico",
+    temperatura: "85ºC",
+    vibracao: "Alta (6.1 mm/s)",
+    ultima_manutencao: "2025-08-22"
+  },
+  {
+    id: "COMP-031",
+    nome: "Compressor de Amônia - Câmara Fria B",
+    tipo: "Compressor Parafuso",
+    status: "Operacional",
+    temperatura: "41ºC",
+    vibracao: "Normal (1.3 mm/s)",
+    ultima_manutencao: "2026-01-30"
+  },
+  {
+    id: "EXA-008",
+    nome: "Exaustor Axial - Cabine de Pintura",
+    tipo: "Exaustor",
+    status: "Operacional",
+    temperatura: "36ºC",
+    vibracao: "Normal (0.7 mm/s)",
+    ultima_manutencao: "2026-03-15"
+  },
+  {
+    id: "TRAFO-002",
+    nome: "Transformador a Seco 500 kVA - Subestação",
+    tipo: "Trafo a Seco",
+    status: "Offline",
+    temperatura: "--",
+    vibracao: "--",
+    ultima_manutencao: "2025-12-01"
   }
 ];
 
